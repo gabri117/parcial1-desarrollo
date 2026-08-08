@@ -395,7 +395,18 @@ h3 {
   font-size: 3rem;
   line-height: 1;
   cursor: pointer;
-  padding: 0;
+  padding: 0.2rem 0.6rem;
+  border-radius: 0.4rem;
+  transition: opacity 0.2s ease;
+}
+
+.carrito-panel__cerrar:hover {
+  opacity: 0.8;
+}
+
+.carrito-panel__cerrar:focus-visible {
+  outline: 2px solid var(--primario);
+  outline-offset: 2px;
 }
 
 .carrito-panel__items {
@@ -436,6 +447,11 @@ h3 {
 
 .btn-vaciar:hover {
   background-color: var(--primario-oscuro);
+}
+
+.btn-vaciar:focus-visible {
+  outline: 3px solid var(--primario);
+  outline-offset: 2px;
 }
 
 /* Fila de item dentro del carrito */
@@ -496,6 +512,11 @@ h3 {
   background-color: var(--gris-claro);
 }
 
+.carrito-item__btn-cant:focus-visible {
+  outline: 2px solid var(--primario);
+  outline-offset: 2px;
+}
+
 .carrito-item__derecha {
   display: flex;
   flex-direction: column;
@@ -519,6 +540,12 @@ h3 {
 
 .carrito-item__eliminar:hover {
   text-decoration: underline;
+}
+
+.carrito-item__eliminar:focus-visible {
+  outline: 2px solid #dc2626;
+  outline-offset: 2px;
+  border-radius: 0.2rem;
 }
 
 /* Mensaje cuando el carrito está vacío */

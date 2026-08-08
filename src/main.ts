@@ -4,9 +4,21 @@ import type { GuitarDTO } from './dtos/guitar.dto'
 import type { CartItemDTO } from './dtos/cart-item.dto'
 
 /**
+ * Obtiene el carrito almacenado en localStorage o un arreglo vacío si no existe.
+ */
+function obtenerCarritoInicial(): CartItemDTO[] {
+  try {
+    const almacenado = localStorage.getItem('guitarla_carrito')
+    return almacenado ? JSON.parse(almacenado) : []
+  } catch {
+    return []
+  }
+}
+
+/**
  * Estado global del carrito. Cada ítem es una guitarra + su cantidad.
  */
-let carrito: CartItemDTO[] = []
+let carrito: CartItemDTO[] = obtenerCarritoInicial()
 
 /**
  * Construye el src de la imagen de una guitarra.
@@ -207,13 +219,32 @@ function sincronizarCarrito(): void {
   renderCarrito()
   actualizarHeader()
   calcularTotal()
+  localStorage.setItem('guitarla_carrito', JSON.stringify(carrito))
+}
+
+/* ---------- Visibilidad del Panel del Carrito ---------- */
+
+/** Muestra el panel modal del carrito y el backdrop. */
+function mostrarCarrito(): void {
+  const panel = document.querySelector<HTMLElement>('#carrito-panel')
+  const backdrop = document.querySelector<HTMLElement>('#carrito-backdrop')
+  panel?.classList.add('mostrar')
+  backdrop?.classList.add('mostrar')
+}
+
+/** Oculta el panel modal del carrito y el backdrop. */
+function ocultarCarrito(): void {
+  const panel = document.querySelector<HTMLElement>('#carrito-panel')
+  const backdrop = document.querySelector<HTMLElement>('#carrito-backdrop')
+  panel?.classList.remove('mostrar')
+  backdrop?.classList.remove('mostrar')
 }
 
 /* ---------- Mutaciones: cambian el estado y sincronizan ---------- */
 
 /**
  * Agrega una guitarra al carrito por su id. Si ya está, incrementa su cantidad;
- * si no, la agrega con cantidad 1.
+ * si no, la agrega con cantidad 1. Despliega automáticamente el modal.
  */
 function agregarCarrito(id: number): void {
   const guitarra = db.find((g) => g.id === id)
@@ -227,6 +258,7 @@ function agregarCarrito(id: number): void {
   }
 
   sincronizarCarrito()
+  mostrarCarrito()
 }
 
 /** Incrementa en 1 la cantidad de un ítem. */
@@ -288,22 +320,12 @@ function iniciarEventosCatalogo(): void {
  */
 function iniciarEventosCarrito(): void {
   const panel = document.querySelector<HTMLElement>('#carrito-panel')
-  const backdrop = document.querySelector<HTMLElement>('#carrito-backdrop')
-
-  const mostrar = () => {
-    panel?.classList.add('mostrar')
-    backdrop?.classList.add('mostrar')
-  }
-  const ocultar = () => {
-    panel?.classList.remove('mostrar')
-    backdrop?.classList.remove('mostrar')
-  }
 
   document.querySelector('#abrir-carrito')?.addEventListener('click', () => {
-    panel?.classList.contains('mostrar') ? ocultar() : mostrar()
+    panel?.classList.contains('mostrar') ? ocultarCarrito() : mostrarCarrito()
   })
-  document.querySelector('#cerrar-carrito')?.addEventListener('click', ocultar)
-  backdrop?.addEventListener('click', ocultar)
+  document.querySelector('#cerrar-carrito')?.addEventListener('click', ocultarCarrito)
+  document.querySelector('#carrito-backdrop')?.addEventListener('click', ocultarCarrito)
   document
     .querySelector('#vaciar-carrito')
     ?.addEventListener('click', vaciarCarrito)
