@@ -8,11 +8,73 @@
     <title>GuitarLA</title>
   </head>
   <body>
-    <header class="header"></header>
+    <header class="header">
+      <div class="header__contenido contenedor">
+        <nav class="barra">
+          <a href="/" class="barra__logo">
+            <img src="/src/img/logo.svg" alt="GuitarLA - Logo" class="logo" />
+          </a>
+
+          <button
+            type="button"
+            id="abrir-carrito"
+            class="carrito"
+            aria-label="Ver carrito de compras"
+          >
+            <img src="/src/img/carrito.png" alt="Carrito de compras" class="carrito__icono" />
+            <span id="carrito-cantidad" class="carrito__badge" data-cantidad="0">0</span>
+          </button>
+        </nav>
+
+        <div class="header__hero">
+          <h1 class="header__titulo">
+            La mejor selección de <span>guitarras clásicas</span>
+          </h1>
+        </div>
+      </div>
+    </header>
 
     <main>
-      <div id="guitarras" class="guitarras contenedor"></div>
+      <section class="coleccion">
+        <h2 class="coleccion__titulo contenedor">Nuestra Colección</h2>
+        <!-- El JS inyectará aquí las tarjetas .guitarra -->
+        <div id="guitarras" class="guitarras contenedor"></div>
+      </section>
     </main>
+
+    <footer class="footer">
+      <div class="contenedor">
+        <p class="footer__texto">GuitarLA - Todos los derechos reservados &copy; 2026</p>
+      </div>
+    </footer>
+
+    <!-- Backdrop: cierra el carrito al hacer click fuera del panel -->
+    <div id="carrito-backdrop" class="carrito-backdrop"></div>
+
+    <!-- Panel lateral del carrito (oculto por defecto, se muestra con .mostrar) -->
+    <aside id="carrito-panel" class="carrito-panel" aria-label="Carrito de compras">
+      <div class="carrito-panel__cabecera">
+        <h3 class="carrito-panel__titulo">Carrito</h3>
+        <button
+          type="button"
+          id="cerrar-carrito"
+          class="carrito-panel__cerrar"
+          aria-label="Cerrar carrito"
+        >
+          &times;
+        </button>
+      </div>
+
+      <!-- El JS inyecta aquí las filas de items -->
+      <div id="carrito-items" class="carrito-panel__items"></div>
+
+      <div class="carrito-panel__pie">
+        <p class="carrito-panel__total">Total: <span id="total">$0.00</span></p>
+        <button type="button" id="vaciar-carrito" class="btn-vaciar">
+          VACIAR CARRITO
+        </button>
+      </div>
+    </aside>
 
     <script type="module" src="/src/main.ts"></script>
   </body>
